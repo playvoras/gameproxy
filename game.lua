@@ -21,7 +21,7 @@ fakegame_meta.__index = function(self, index)
             assert(type(assetid) == "string" and assetid:find("rbxassetid://"), "arg #1 not a valid asset id.")
             return {insert_service:LoadLocalAsset(assetid)}
         end
-    elseif index == "LoadString" then
+    elseif index == "Loadstring" then
         return function(_, str)
             assert(type(str) == "string", "arg #1 must be a string.")
             return loadstring(str)()
