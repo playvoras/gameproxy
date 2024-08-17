@@ -1,6 +1,13 @@
 local fakegame = newproxy(true)
 local fakegame_meta = (debug.getmetatable and (debug.getmetatable(fakegame) or getrawmetatable(fakegame))) or getmetatable(fakegame)
 
+local function should_wrap_function(index)
+    local ignore_list = {
+        "HttpGet", "HttpPost", "GetObjects", "Loadstring", "WaitForChild", "IsLoaded", "GetService", "FindFirstChild", "GetChildren", "GetDescendants"
+    }
+    return not table.find(ignore_list, index)
+end
+
 fakegame_meta.__index = function(self, index)
     local success, game_index = pcall(function()
         return game[index]
@@ -64,7 +71,7 @@ fakegame_meta.__index = function(self, index)
             repeat task.wait() until s or r
             return r.Body
         end
-    elseif success and type(game_index) == "function" then
+    elseif success and type(game_index) == "function" and should_wrap_function(index) then
         return function(_, ...)
             return game_index(game, ...)
         end
