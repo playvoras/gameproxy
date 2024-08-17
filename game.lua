@@ -1,5 +1,5 @@
 local fakegame = newproxy(true)
-local fakegame_meta = getmetatable(fakegame)
+local fakegame_meta = debug.getmetatable or getmetatable(fakegame)
 
 fakegame_meta.__index = function(self, index)
     local success, game_index = pcall(function()
